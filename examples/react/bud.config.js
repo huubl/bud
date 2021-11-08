@@ -4,22 +4,16 @@ const react = require('@roots/bud-react')
 
 const extensions = [babel, postcss, react]
 
-module.exports = app =>
-  app
+module.exports = app => {
+  return app
     .use(extensions)
     .template({
       template: 'public/index.html',
     })
     .entry({
-      react: ['react', 'react-dom'],
-      app: {
-        import: ['app.{js,css}'],
-        dependOn: ['react'],
-      },
+      app: ['app.{js,css}'],
     })
     .when(app.isProduction, () => {
-      app.runtime().splitChunks()
+      app.runtime('single').splitChunks()
     })
-    .persist({
-      type: 'memory',
-    })
+}

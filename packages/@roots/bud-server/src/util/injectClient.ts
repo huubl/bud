@@ -19,17 +19,22 @@ export const injectClient: InjectClient = (app, injection) => {
   app.hooks.on(
     'build/entry',
     (entry: Webpack.Entry): Webpack.Entry => ({
-      'bud-dev': injection,
-      ...Object.entries(entry).reduce(
-        (entries, [name, assets]) => ({
-          ...entries,
-          [name]: {
-            ...assets,
-            dependOn: ['bud-dev', ...(assets.dependOn ?? [])],
-          },
-        }),
-        {},
-      ),
+      ...(entry
+        ? Object.entries(entry).reduce(
+            (entries, [name, asset]) => ({
+              ...entries,
+              [name]: {
+                ...asset,
+                import: [...(asset.import ?? []), ...injection],
+              },
+            }),
+            {},
+          )
+        : {
+            app: {
+              import: ['index.js', ...injection],
+            },
+          }),
     }),
   )
 }

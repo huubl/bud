@@ -194,6 +194,11 @@ namespace Hooks {
       svg: Subject
       image: Subject
       font: Subject
+      xml: Subject
+      json5: Subject
+      csv: Subject
+      yml: Subject
+      toml: Subject
     }
 
     export type Root = {
@@ -232,7 +237,8 @@ namespace Hooks {
       oneOf: Webpack.RuleSetRule
     }
 
-    export type Optimization = Webpack.Configuration['optimization']
+    export type Optimization =
+      Webpack.Configuration['optimization']
     export interface OptimizationOverride extends Optimization {
       splitChunks: {
         cacheGroups: any
@@ -268,6 +274,7 @@ namespace Hooks {
         | keyof Top
         | keyof Props
         | keyof Dive<Config['output'], 'output'>
+        | 'build/output/pathInfo'
         | keyof Dive<Config['module'], 'module'>
         | keyof Dive<Config['module']['rules'], 'module/rules'>
         | keyof Dive<
@@ -279,10 +286,13 @@ namespace Hooks {
         | keyof Dive<Config['resolveLoader'], 'resolveLoader'>
         | 'build/cache/name'
         | 'build/cache/cacheLocation'
-        | 'build/cache/directory'
+        | 'build/cache/cacheDirectory'
+        | 'build/cache/hashAlgorithm'
+        | 'build/cache/managedPaths'
         | 'build/cache/version'
         | 'build/cache/type'
         | 'build/cache/buildDependencies'
+        | keyof Dive<Config['experiments'], 'experiments'>
         | keyof Dive<Config['watchOptions'], 'watchOptions'>
         | keyof Dive<Config['performance'], 'performance'>
         | keyof Dive<Config['optimization'], 'optimization'>
@@ -335,6 +345,8 @@ namespace Hooks {
   }
 
   export type Name =
+    | `before`
+    | `after`
     | `${Item.Final}`
     | `${Locale.Final}`
     | `${Loader.Final}`

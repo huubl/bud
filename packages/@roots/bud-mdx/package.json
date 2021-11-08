@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-mdx",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "mdx extension for @roots/bud projects",
   "homepage": "https://roots.io/bud",
   "repository": {
@@ -47,6 +47,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -59,16 +62,23 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "devDependencies": {
-    "@types/node": "^15.0.0",
+    "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
+    "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@types/node": "^15.12.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "webpack": "^5.36.0"
+    "webpack": "^5.38.1"
   },
   "dependencies": {
     "@mdx-js/loader": "^1.6.22",
-    "@roots/bud-build": "workspace:*",
-    "@roots/bud-extensions": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
+    "@roots/bud-build": "workspace:packages/@roots/bud-build",
     "autobind-decorator": "^2.4.0"
+  },
+  "peerDependencies": {
+    "@roots/bud": "*",
+    "@roots/bud-babel": "*",
+    "@roots/bud-react": "*",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

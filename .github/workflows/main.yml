@@ -1,0 +1,65 @@
+name: Build & Test
+
+on:
+  push:
+    branches:
+      - stable
+  pull_request:
+    branches:
+      - stable
+      - next
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+        node:
+          - 16.x
+
+    name: test node@${{matrix.node}}/${{matrix.platform}}
+    runs-on: ${{matrix.platform}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{matrix.node}}
+
+      - name: Cache
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+      - name: Restore
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install
+        run: yarn install --immutable
+
+      - name: Build
+        run: |
+          yarn workspaces foreach --topological-dev --no-private --exclude @roots/bud-typings -i -p -v run build:cjs
+          yarn workspaces foreach --topological-dev --no-private --exclude @roots/bud-typings -i -p -v run build:esm
+
+      - name: Unit Tests
+        run: yarn jest --coverage --testPathIgnorePatterns="tests/integration" --testPathIgnorePatterns="tests/util"
+
+      - name: Integration Tests
+        run: node ./jest.integration.js
+
+      - name: Lint
+        run: |
+          yarn workspaces foreach --no-private --exclude @roots/bud-typings -p -v run lint
+          yarn workspaces foreach --no-private --exclude @roots/bud-typings -p -v run pkg

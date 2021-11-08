@@ -1,59 +1,101 @@
 import {useState, useEffect} from 'react'
 import execa from 'execa'
 import {Dashboard} from '@roots/bud-framework'
+import {isEqual} from 'lodash'
 
 export const useGit = (): Dashboard.UseGit.Status => {
+  const [isRepo, setIsRepo] = useState(null)
   const [head, setHead] = useState(null)
   const [branch, setBranch] = useState(null)
   const [status, setStatus] = useState(null)
+  const [untracked, setUntracked] = useState(null)
 
   useEffect(() => {
-    setInterval(async () => {
-      const update = await execa('git', ['status', '--short'])
+    isEqual(isRepo, null) &&
+      (async () => {
+        try {
+          await execa('git', [
+            'rev-parse',
+            '--is-inside-work-tree',
+          ])
 
-      if (update !== status) {
-        setStatus(update)
-      }
-    }, 1000)
+          setIsRepo(true)
+        } catch (err) {
+          setIsRepo(false)
+        }
+      })()
   }, [])
 
   useEffect(() => {
-    setInterval(async () => {
-      const revision = await execa('git', [
-        'rev-parse',
-        '--short',
-        'HEAD',
-        '--no-color',
-      ])
+    isRepo &&
+      setInterval(async () => {
+        try {
+          const {stdout} = await execa('git', [
+            'status',
+            '--short',
+            '--untracked',
+          ])
 
-      setHead(revision)
-    })
-  }, [])
+          const lns = stdout.split('\n')
+
+          const modded = lns
+            .filter(ln => ln.includes('M '))
+            .map(ln => ln.replace('M ', '').replace('\n', ''))
+
+          !isEqual(status, modded) && setStatus(modded)
+
+          const freshFiles = lns
+            .filter(ln => ln.includes('?? '))
+            .map(ln => ln.replace('?? ', '').replace('\n', ''))
+
+          !isEqual(untracked, freshFiles) &&
+            setUntracked(freshFiles)
+        } catch (err) {
+          return
+        }
+      }, 1000)
+  }, [isRepo])
 
   useEffect(() => {
-    setInterval(async () => {
-      const branch = await execa('git', [
-        'branch',
-        '--show-current',
-        '--no-color',
-      ])
+    status &&
+      (async () => {
+        const {stdout} = await execa('git', [
+          'branch',
+          '--show-current',
+          '--no-color',
+        ])
 
-      setBranch(branch)
-    })
-  }, [])
+        setBranch(stdout)
+      })()
+  }, [status])
+
+  useEffect(() => {
+    branch &&
+      (async () => {
+        try {
+          const {stdout} = await execa('git', [
+            'rev-parse',
+            '--short',
+            'HEAD',
+            '--no-color',
+          ])
+
+          setHead(stdout)
+        } catch (err) {
+          return
+        }
+      })()
+  }, [branch])
 
   const hasError: boolean =
     [head, branch, status].filter(res => res?.stderr)?.length > 0
 
   return {
-    head: head?.stdout?.toString() ?? null,
-    branch: branch?.stdout?.toString() ?? null,
-    status: !status?.stdout?.toString()
-      ? '0'
-      : status.stdout
-          .toString()
-          .split('\n')
-          .filter(item => item !== '').length,
+    isRepo,
+    head,
+    branch,
+    status,
+    untracked,
     hasError,
   }
 }

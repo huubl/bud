@@ -3,9 +3,8 @@ import {
   Options,
 } from 'webpack-manifest-plugin'
 import {Module} from '@roots/bud-framework'
-import {WebpackPluginInstance} from 'webpack/types'
 
-const extension: Module<WebpackPluginInstance, Options> = {
+const extension: Module = {
   name: 'webpack-manifest-plugin',
 
   options: app =>
@@ -17,10 +16,12 @@ const extension: Module<WebpackPluginInstance, Options> = {
       ...options.all(),
     }
 
-    return new WebpackManifestPlugin(pluginOptions)
+    const plugin = new WebpackManifestPlugin(pluginOptions)
+
+    return plugin
   },
 
-  when: app => app.store.enabled('manifest'),
+  when: app => app.store.isTrue('manifest'),
 }
 
 export default extension

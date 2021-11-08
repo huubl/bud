@@ -22,7 +22,7 @@
   <strong>@roots/entrypoints-webpack-plugin</strong>
 </h1>
 
-> undefined
+> Manifest with assets grouped by entrypoint
 
 - [Overview](#overview)
 - [Installation](#installation)
@@ -50,10 +50,10 @@ yarn add @roots/entrypoints-webpack-plugin --dev
 ## Usage
 
 ```js
-import { Plugin } from "@roots/entrypoints-webpack-plugin";
+import { EntrypointsWebpackPlugin } from "@roots/entrypoints-webpack-plugin";
 
 webpack({
-  plugins: [new Plugin()],
+  plugins: [new EntrypointsWebpackPlugin()],
 });
 ```
 

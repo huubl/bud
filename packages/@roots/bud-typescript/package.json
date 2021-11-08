@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-typescript",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "Adds Typescript support to Bud.",
   "repository": {
     "type": "git",
@@ -45,6 +45,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -56,25 +59,31 @@
     "pkg:check": "yarn g:pkg:check",
     "pkg:format": "yarn g:pkg:format"
   },
-  "peerDependencies": {
-    "eslint": "^7.23.0",
-    "typescript": "^4.2.3"
-  },
   "devDependencies": {
-    "@roots/bud-babel": "workspace:*",
-    "@roots/bud-extensions": "workspace:*",
-    "@types/node": "^15.0.0",
-    "typescript": "^4.2.4",
-    "webpack": "^5.36.0"
+    "@roots/bud-babel": "workspace:packages/@roots/bud-babel",
+    "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
+    "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@types/node": "^15.12.2",
+    "typescript": "^4.3.2",
+    "webpack": "^5.38.1"
   },
   "dependencies": {
-    "@roots/bud-build": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
-    "@roots/bud-support": "workspace:*",
-    "@typescript-eslint/parser": "^4.22.0",
+    "@roots/bud-build": "workspace:packages/@roots/bud-build",
+    "@typescript-eslint/parser": "^4.26.1",
     "autobind-decorator": "^2.4.0",
-    "fork-ts-checker-webpack-plugin": "^6.2.5",
+    "fork-ts-checker-webpack-plugin": "^6.2.10",
     "globby": "^11.0.3",
-    "ts-loader": "^9.1.1"
+    "ts-loader": "^9.2.3"
+  },
+  "peerDependencies": {
+    "@roots/bud": "*",
+    "@roots/bud-babel": "*",
+    "eslint": "^7",
+    "typescript": "^4"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-esbuild",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "ESBuild transpilation extension for Bud projects",
   "homepage": "https://roots.io/bud",
   "repository": {
@@ -47,6 +47,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -59,15 +62,21 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.168",
-    "@types/node": "^15.0.0",
-    "webpack": "^5.36.0"
+    "@roots/bud-build": "workspace:packages/@roots/bud-build",
+    "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
+    "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@types/fs-extra": "^9.0.11",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^15.12.2",
+    "webpack": "^5.38.1"
   },
   "dependencies": {
-    "@roots/bud-extensions": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
     "autobind-decorator": "^2.4.0",
-    "esbuild-loader": "^2.12.0",
+    "esbuild-loader": "^2.13.1",
+    "fs-extra": "^10.0.0",
     "lodash": "^4.17.21"
+  },
+  "peerDependencies": {
+    "@roots/bud": "*"
   }
 }

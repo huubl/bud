@@ -1,6 +1,6 @@
 {
   "name": "@roots/filesystem",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "Automated package installation",
   "homepage": "https://roots.io/bud",
   "repository": {
@@ -45,6 +45,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -57,14 +60,14 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "dependencies": {
-    "@roots/container": "workspace:*",
+    "@roots/container": "workspace:packages/@roots/container",
     "autobind-decorator": "^2.4.0",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "^10.0.0",
     "globby": "^11.0.3",
     "lodash": "^4.17.21",
     "resolve-from": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^15.0.0"
+    "@types/node": "^15.12.2"
   }
 }

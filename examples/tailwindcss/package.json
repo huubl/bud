@@ -2,12 +2,10 @@
   "name": "example-tailwindcss",
   "private": true,
   "devDependencies": {
-    "@roots/bud": "workspace:packages/@roots/bud",
+    "@roots/bud": "workspace:*",
     "@roots/bud-babel": "workspace:*",
     "@roots/bud-cli": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
-    "@roots/bud-react": "workspace:*",
-    "@roots/bud-tailwindcss": "workspace:*",
-    "@tailwindcss/jit": "^0.1.18"
+    "@roots/bud-postcss": "workspace:*",
+    "@roots/bud-tailwindcss": "workspace:*"
   }
 }

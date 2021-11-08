@@ -1,12 +1,14 @@
 import Command from './Command'
-import {Bud} from '@roots/bud'
+import {Framework} from '@roots/bud'
 import {Config} from './Config'
-import * as flags from './flags/index'
 import {boundMethod as bind} from 'autobind-decorator'
 import {isFunction} from 'lodash'
+import * as flags from './flags'
 
 export default class Build extends Command {
-  public app: Bud
+  public app: Framework
+
+  public mode: 'development' | 'production'
 
   public static flags = {
     help: flags.help({char: 'h'}),
@@ -19,10 +21,19 @@ export default class Build extends Command {
     manifest: flags.boolean(),
   }
 
-  public mode: 'development' | 'production'
+  public setEnv(env) {
+    this.app.mode = env
+    process.env.BABEL_ENV = env
+    process.env.NODE_ENV = env
+  }
 
   public async run() {
-    this.app.mode = this.mode
+    this.features = this.parse(Build).flags
+    !this.features.ci
+      ? this.app.dashboard.run()
+      : this.app.store.set('ci', true)
+
+    this.setEnv(this.mode)
 
     await this.doStatics()
 
@@ -40,8 +51,7 @@ export default class Build extends Command {
       `${this.app.name}.${this.app.mode}.config.js`,
     ])
 
-    const flags = this.parse(Build).flags
-    Object.entries(flags).forEach(([k, v]) => {
+    Object.entries(this.features).forEach(([k, v]) => {
       this.app.store.set(k, v)
     })
 

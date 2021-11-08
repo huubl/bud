@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-entrypoints",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "Webpack tools",
   "repository": {
     "type": "git",
@@ -31,8 +31,8 @@
   "files": [
     "docs/",
     "lib/",
-    "manifest.yml",
-    "types/"
+    "types/",
+    "manifest.yml"
   ],
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -45,6 +45,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -57,11 +60,11 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "devDependencies": {
-    "@types/node": "^15.0.0"
-  },
-  "dependencies": {
     "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
     "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@types/node": "^15.12.2"
+  },
+  "dependencies": {
     "@roots/entrypoints-webpack-plugin": "workspace:packages/@roots/entrypoints-webpack-plugin",
     "autobind-decorator": "^2.4.0"
   }

@@ -7,6 +7,11 @@ import devScriptReducer from './util'
 const extension: Module = {
   name: '@roots/bud-react',
   boot: app => {
+    /**
+     * Exit early if peerDepenedencies unmet
+     */
+    if (!app.discovery.hasPeerDependency('react')) return
+
     app.babel.setPresets(['@babel/preset-react'])
 
     app.when(app.isDevelopment, () => {

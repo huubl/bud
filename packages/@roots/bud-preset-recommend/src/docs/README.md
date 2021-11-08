@@ -1,10 +1,10 @@
 ## Overview
 
 Includes support for:
-  - postcss (with postcss-preset-env) 
-  - babel
-  - `entrypoints.json` (for easier enqueues when not [generating html with bud](docs:config/template))
-  - code automatically minified in production
+
+- postcss
+- babel
+- `entrypoints.json` (for easier enqueues when not [generating html with bud](docs:config/template))
 
 ## Requirements
 
@@ -26,8 +26,6 @@ The preset requires `postcss` to be installed in your project. You can install i
 yarn bud extensions:install
 ```
 
-You may need to restart the build after installation. But, hopefully not 🤞.
-
 ## Usage
 
 `bud.config.yml`:
@@ -41,9 +39,7 @@ extensions:
 
 ```json
 {
-  "extensions": [
-    "@roots/bud-preset-recommend"
-  ]
+  "extensions": ["@roots/bud-preset-recommend"]
 }
 ```
 

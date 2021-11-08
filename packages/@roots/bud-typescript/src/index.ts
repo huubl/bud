@@ -9,8 +9,8 @@ const extension: Module = {
   api: {
     typecheck,
   },
-  boot: ({build, hooks, store}) => {
-    store.set('patterns.ts', /\.(ts|tsx)$/)
+  boot: ({build, discovery, hooks, store}) => {
+    store.set('patterns.ts', /\.tsx?$/)
 
     build.loaders['ts'] = new Loader(
       require.resolve('ts-loader'),

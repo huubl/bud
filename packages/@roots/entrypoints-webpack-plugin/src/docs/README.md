@@ -15,12 +15,10 @@ yarn add @roots/entrypoints-webpack-plugin --dev
 ## Usage
 
 ```js
-import {Plugin} from '@roots/entrypoints-webpack-plugin'
+import {EntrypointsWebpackPlugin} from '@roots/entrypoints-webpack-plugin'
 
 webpack({
-    plugins: [
-        new Plugin(),
-    ],
+  plugins: [new EntrypointsWebpackPlugin()],
 })
 ```
 
@@ -35,18 +33,14 @@ Assets are separated by entrypoint name, and then by filetype. The `runtimeChunk
       "runtime.9ffe4f626b6ffca53bd1.js",
       "app.d4e917b74a97bb0fe9ad.js"
     ],
-    "css": [
-      "app.bcaf7e71ef4356832914.css"
-    ]
+    "css": ["app.bcaf7e71ef4356832914.css"]
   },
   "editor": {
     "js": [
       "runtime.9ffe4f626b6ffca53bd1.js",
       "editor.a22827c63d6d9e772ea1.js"
     ],
-    "css": [
-      "editor.ec414c4a744ec7bcb597.css"
-    ]
+    "css": ["editor.ec414c4a744ec7bcb597.css"]
   },
   "customizer": {
     "js": [

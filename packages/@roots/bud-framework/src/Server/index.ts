@@ -33,6 +33,15 @@ export interface Server extends Service {
   isWatchable: boolean
 
   /**
+   * Watcher instance
+   */
+  watcher: {
+    [key: string]: any
+    close: CallableFunction
+    on: CallableFunction
+  }
+
+  /**
    * Retrieve an array of watched files.
    */
   getWatchedFilesArray(): string[]
@@ -40,7 +49,7 @@ export interface Server extends Service {
   /**
    * Run the server instance
    */
-  run(compiler: Webpack.Compiler): this
+  run(): this
 
   /**
    * Inject client scripts innto compilation (HMR, dev experience)

@@ -1,11 +1,11 @@
-import {Hooks, Server} from '@roots/bud-typings'
+import {Hooks, Server} from '@roots/bud-framework'
 import {Theme} from '@roots/ink-use-style'
 import Webpack from 'webpack/types'
 import {cpus} from 'os'
 
 interface Configuration {
   /**
-   * Regular expression library
+   * Regular expressions for convenience when doing pattern matching.
    *
    * @example
    *
@@ -22,6 +22,7 @@ interface Configuration {
 
   /**
    * Feature: CI mode
+   *
    * @default false
    */
   ci: boolean
@@ -140,6 +141,7 @@ export const config: Configuration = {
     svg: /\.svg$/,
     ts: /\.(ts|tsx)$/,
     vue: /\.vue$/,
+    md: /\.md$/,
   },
   location: {
     project: process.cwd(),
@@ -160,7 +162,7 @@ export const config: Configuration = {
   log: false,
   manifest: true,
   fileFormat: '[name]',
-  hashFormat: '[name].[contenthash]',
+  hashFormat: '[name].[contenthash:6]',
   build: {
     optimization: {
       emitOnErrors: false,
@@ -191,6 +193,15 @@ export const config: Configuration = {
     htmlWebpackPlugin: {
       alwaysWriteToDisk: true,
       inject: true,
+      minify: {
+        collapseWhitespace: false,
+        keepClosingSlash: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      },
     },
     interpolateHtmlPlugin: {
       replace: {},
@@ -217,7 +228,7 @@ export const config: Configuration = {
         '!vendor',
       ],
       options: {
-        persistant: true,
+        persistant: false,
       },
     },
     middleware: {

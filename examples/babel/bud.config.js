@@ -1,9 +1,7 @@
-module.exports = app =>
-  app
-    .use(require('@roots/bud-babel'))
-    .html()
-    .entry({
-      scripts: '*.js',
-      styles: '*.css',
-    })
-    .persist({type: 'memory'})
+module.exports = app => {
+  app.use(require('@roots/bud-babel')).template().entry({
+    app: '*.{js,css}',
+  })
+
+  return app
+}

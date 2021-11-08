@@ -4,7 +4,9 @@ module.exports = app =>
       require('@roots/bud-babel'),
       require('@roots/bud-postcss'),
     ])
-    .html({
+    .template({
       template: 'public/index.html',
     })
-    .entry('app', ['app.css'])
+    .entry({
+      app: ['app.css'],
+    })

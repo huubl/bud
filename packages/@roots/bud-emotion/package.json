@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-emotion",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "CSS-in-JS support for the @roots/bud framework",
   "homepage": "https://roots.io/bud",
   "repository": {
@@ -33,8 +33,8 @@
   "files": [
     "docs/",
     "lib/",
-    "manifest.yml",
-    "types/"
+    "types/",
+    "manifest.yml"
   ],
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -47,6 +47,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -59,18 +62,25 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.16",
-    "@babel/preset-react": "^7.13.13",
-    "@roots/bud-babel": "workspace:*",
-    "@roots/bud-react": "workspace:*",
-    "@types/node": "^15.0.0"
+    "@babel/core": "^7.14.5",
+    "@babel/preset-react": "^7.14.5",
+    "@roots/bud-babel": "workspace:packages/@roots/bud-babel",
+    "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
+    "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@roots/bud-react": "workspace:packages/@roots/bud-react",
+    "@types/node": "^15.12.2"
   },
   "dependencies": {
     "@emotion/css": "^11.1.3",
-    "@emotion/react": "^11.1.5",
+    "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@roots/bud-extensions": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
     "autobind-decorator": "^2.4.0"
+  },
+  "peerDependencies": {
+    "@roots/bud": "*",
+    "@roots/bud-babel": "*",
+    "@roots/bud-react": "*",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

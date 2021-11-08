@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-preset-recommend",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "Recommended preset for Bud projects",
   "repository": {
     "type": "git",
@@ -45,6 +45,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -57,15 +60,26 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "devDependencies": {
-    "@roots/bud-api": "workspace:*",
-    "@types/node": "^15.0.0"
+    "@roots/bud-api": "workspace:packages/@roots/bud-api",
+    "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
+    "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@types/eslint": "^7.2.13",
+    "@types/fs-extra": "^9.0.11",
+    "@types/node": "^15.12.2"
   },
   "dependencies": {
-    "@roots/bud-babel": "workspace:*",
-    "@roots/bud-cli": "workspace:*",
-    "@roots/bud-entrypoints": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
-    "@roots/bud-postcss": "workspace:*",
-    "autobind-decorator": "^2.4.0"
+    "@roots/bud": "workspace:packages/@roots/bud",
+    "@roots/bud-babel": "workspace:packages/@roots/bud-babel",
+    "@roots/bud-entrypoints": "workspace:packages/@roots/bud-entrypoints",
+    "@roots/bud-eslint": "workspace:packages/@roots/bud-eslint",
+    "@roots/bud-postcss": "workspace:packages/@roots/bud-postcss"
+  },
+  "peerDependencies": {
+    "@roots/bud": "*",
+    "@roots/bud-cli": "*",
+    "eslint": "^7.27.0",
+    "postcss": "^8.3.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

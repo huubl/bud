@@ -1,5 +1,5 @@
 {
-  "name": "example-wordpress",
+  "name": "example-wordpress-theme",
   "private": true,
   "devDependencies": {
     "@roots/bud": "workspace:*",
@@ -9,13 +9,8 @@
     "@roots/bud-esbuild": "workspace:*",
     "@roots/bud-postcss": "workspace:*",
     "@roots/bud-react": "workspace:*",
-    "@roots/bud-terser": "workspace:*",
     "@roots/bud-wordpress-dependencies": "workspace:*",
     "@roots/bud-wordpress-externals": "workspace:*",
-    "@roots/bud-wordpress-manifests": "workspace:*",
-    "react-refresh": "^0.10.0"
-  },
-  "dependencies": {
-    "bootstrap": "^4.6.0"
+    "@roots/bud-wordpress-manifests": "workspace:*"
   }
 }

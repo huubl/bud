@@ -151,6 +151,16 @@ interface Framework {
   setInstance(key: string, framework: Framework): void
 
   /**
+   * Get the compiler mode
+   */
+  getMode(): Mode
+
+  /**
+   * Set the compiler mode
+   */
+  setMode(mode: Mode): void
+
+  /**
    * app.bootstrap
    */
   bootstrap(services: {
@@ -179,6 +189,16 @@ interface Framework {
    * app.sequence
    */
   sequence(fns: Array<(app: Framework) => any>): Framework
+
+  /**
+   * app.tap
+   */
+  tap(
+    fn:
+      | ((app?: Framework) => any)
+      | ((this: Framework, app?: Framework) => any),
+    bound?: boolean,
+  ): Framework
 
   /**
    * app.when
@@ -236,11 +256,11 @@ namespace Framework {
 abstract class Framework {
   public name = 'bud'
 
-  protected _services: Container<Service>
+  public _services: Container<Service>
 
-  protected _instance: Container<this>
+  public _instance: Container<this>
 
-  protected _mode: Mode
+  public _mode: Mode
 
   public api: Api
 
@@ -286,6 +306,14 @@ abstract class Framework {
     this._mode = mode
   }
 
+  public getMode(): Mode {
+    return this.mode
+  }
+
+  public setMode(mode: Mode): void {
+    this.mode = mode
+  }
+
   public get isProduction(): boolean {
     return this.mode === 'production'
   }
@@ -295,6 +323,12 @@ abstract class Framework {
   }
 
   public constructor(config?: Store['repository']) {
+    this.mode = (
+      process.env.NODE_ENV && process.env.NODE_ENV !== 'test'
+        ? process.env.NODE_ENV
+        : 'production'
+    ) as 'production' | 'development'
+
     this.store = new Store(this.get).setStore(config ?? {})
   }
 
@@ -391,9 +425,19 @@ abstract class Framework {
 
   @bind
   public sequence(fns: Array<(app: this) => any>): Framework {
-    fns.reduce((_val, fn) => {
-      return fn.bind(this)(this)
-    }, this)
+    fns.reduce((_val, fn) => this.tap(fn), this)
+
+    return this
+  }
+
+  @bind
+  public tap(
+    fn:
+      | ((app: Framework) => any)
+      | ((this: Framework, app?: Framework) => any),
+    bound: boolean = true,
+  ) {
+    fn.call(bound ? this : null, this)
 
     return this
   }
@@ -442,7 +486,7 @@ abstract class Framework {
   @bind
   public error(message: string, title: string) {
     const instance = this.dashboard.renderError(message, title)
-    setTimeout(instance.quit, 2000)
+    setTimeout(instance.unmount, 2000)
   }
 }
 

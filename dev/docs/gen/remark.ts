@@ -1,4 +1,4 @@
-import vfile from 'to-vfile'
+import toVFile from 'to-vfile'
 import remark from 'remark'
 import toc from 'remark-toc'
 import emoji from 'remark-emoji'
@@ -40,8 +40,6 @@ const banner = pkg => {
     require.resolve('../src/templates/banner.md'),
   )
 
-  console.log(banner.contents.toString())
-
   banner.contents = Buffer.from(
     banner.contents
       .toString()
@@ -79,27 +77,34 @@ const footer = pkg => {
   return result
 }
 
-const parseFile = filePath => vfile.readSync(filePath)
+const parseFile = (filePath: string): any =>
+  toVFile.readSync(filePath)
 
 const fromFile = (srcFile, pkg) => {
   let result: string
 
   const mdv = parseFile(srcFile)
 
-  mdv.contents = pkg && srcFile.includes('README.md') ? _.join(
-    [banner(pkg), mdv.contents.toString(), footer(pkg)],
-    '\n',
-  ) : mdv.contents.toString()
+  mdv.contents =
+    pkg && srcFile.includes('README.md')
+      ? _.join(
+          [banner(pkg), mdv.contents.toString(), footer(pkg)],
+          '\n',
+        )
+      : mdv.contents.toString()
 
   /**
    * Includes
    */
-  const includeMd = (match) => {
+  const includeMd = match => {
     match = match.replace(/\[include\]\((.*?)\)/g, '$1')
     return fs.readFileSync(`${process.cwd()}/${match}`)
   }
-  
-  mdv.contents = (mdv as any).contents.replace(/\[include\]\(.*?\)/g, includeMd)
+
+  mdv.contents = (mdv as any).contents.replace(
+    /\[include\]\(.*?\)/g,
+    includeMd,
+  )
 
   replacements.forEach(([f, r]) => {
     mdv.contents = mdv.contents.replace(f, r)
@@ -109,7 +114,7 @@ const fromFile = (srcFile, pkg) => {
 
   remark()
     .use(toc, {tight: true})
-    .use(git, {repo: 'git@github.com:roots/bud'})
+    .use(git, {repository: 'roots/bud'})
     .use(emoji)
     .process(mdv, (err, file) => {
       err && console.error(err)

@@ -7,11 +7,11 @@ import {Config} from './Config'
 const extension: Module = {
   name: '@roots/bud-postcss',
 
-  api: app => ({
-    postcss: new Config(app),
+  api: () => ({
+    postcss: new Config(),
   }),
 
-  boot: ({build, path, postcss}) => {
+  boot: ({build, discovery, path, postcss}) => {
     build.loaders.postcss = new Loader(
       require.resolve('postcss-loader'),
     )
@@ -23,9 +23,7 @@ const extension: Module = {
           config: pathExistsSync(
             path('project', 'postcss.config.js'),
           ),
-          plugins: Object.values(
-            postcss.plugins,
-          ).map(([plugin, options]) => require(plugin)(options)),
+          plugins: Object.values(postcss.plugins),
         },
         sourceMap: true,
       }),
@@ -38,10 +36,20 @@ const extension: Module = {
     ])
 
     !pathExistsSync(path('project', 'postcss.config.js')) &&
-      postcss.setPlugins([
-        'postcss-import',
-        ['postcss-preset-env', {stage: 1}],
-      ])
+      discovery.hasPeerDependency('postcss-import') &&
+      discovery.hasPeerDependency('postcss-preset-env') &&
+      postcss.setPlugins({
+        import: 'postcss-import',
+        'preset-env': [
+          'postcss-preset-env',
+          {
+            stage: 1,
+            features: {
+              'focus-within-pseudo-class': false,
+            },
+          },
+        ],
+      })
   },
 }
 

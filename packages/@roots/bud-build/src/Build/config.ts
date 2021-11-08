@@ -1,4 +1,5 @@
 import type {Framework} from '@roots/bud-framework'
+import type {Configuration} from 'webpack'
 
 export function config(this: Framework): void {
   this.hooks
@@ -6,10 +7,11 @@ export function config(this: Framework): void {
       'bail',
       'cache',
       'context',
-      'devServer',
       'devtool',
       'entry',
+      'experiments',
       'externals',
+      'infrastructureLogging',
       'mode',
       'module',
       'name',
@@ -41,45 +43,54 @@ export function config(this: Framework): void {
       'modules',
     ])
     .hooks.link('build/module', ['rules'])
-    .hooks.link('build/cache', [
-      'name',
-      'type',
-      'directory',
-      'cacheLocation',
-      'buildDependencies',
-      'version',
-      'type',
-    ])
     .hooks.link('build/output', [
       'path',
+      'pathinfo',
       'publicPath',
       'filename',
     ])
 
   this.hooks
     .on('build/bail', true)
-    .hooks.on(
-      'build/cache/name',
-      () => `${this.name}-${this.cache.version}`,
-    )
-    .hooks.on('build/cache/type', 'filesystem')
-    .hooks.on('build/cache/version', () => this.cache.version)
-    .hooks.on('build/cache/cacheLocation', () =>
-      this.path('storage'),
-    )
-    .hooks.on('build/cache/directory', () =>
-      this.path('storage'),
-    )
-    .hooks.on('build/cache/buildDependencies', () => ({
-      project: [
-        this.path('project', `${this.name}.config.js`),
-        this.path('project', 'package.json'),
-      ],
+    .hooks.on('build/experiments', () => ({
+      lazyCompilation: this.hooks.filter(
+        'build/experiments/lazyCompilation',
+      ),
     }))
+    .hooks.on('build/experiments/lazyCompilation', () => false)
+
+    /**
+     * cache
+     * @see @roots/bud-cache
+     */
+    .hooks.on('build/cache', () => ({
+      name: this.hooks.filter('build/cache/name'),
+      version: this.hooks.filter('build/cache/version'),
+      type: this.hooks.filter('build/cache/type'),
+      cacheDirectory: this.hooks.filter(
+        'build/cache/cacheDirectory',
+      ),
+      cacheLocation: this.hooks.filter(
+        'build/cache/cacheLocation',
+      ),
+      buildDependencies: this.hooks.filter(
+        'build/cache/buildDependencies',
+      ),
+      managedPaths: this.hooks.filter(
+        'build/cache/managedPaths',
+      ),
+    }))
+
+    .hooks.on('build/infrastructureLogging', () => ({}))
+
     .hooks.on('build/node', false)
+
     .hooks.on('build/context', () => this.path('project'))
+
     .hooks.on('build/devtool', false)
+
     .hooks.on('build/mode', () => this.mode)
+
     .hooks.on('build/module/rules', () => [
       {
         parser: {requireEnsure: false},
@@ -91,7 +102,9 @@ export function config(this: Framework): void {
         rule.make(this),
       ),
     )
+
     .hooks.on('build/name', () => this.name)
+
     .hooks.on(
       'build/optimization/emitOnErrors',
       this.store.get('build.optimization.emitOnErrors'),
@@ -116,6 +129,7 @@ export function config(this: Framework): void {
         }.js`,
     )
     .hooks.on('build/output/path', () => this.path('dist'))
+    .hooks.on('build/output/pathinfo', () => false)
     .hooks.on('build/output/publicPath', () =>
       this.store.get('location.publicPath'),
     )
@@ -124,7 +138,7 @@ export function config(this: Framework): void {
     )
     .hooks.on('build/performance', () => ({}))
     .hooks.on('build/plugins', () => this.extensions.make())
-    .hooks.on('build/profile', false)
+    .hooks.on('build/profile', () => true)
     .hooks.on('build/recordsPath', () =>
       this.path('storage', 'records.json'),
     )
@@ -138,11 +152,7 @@ export function config(this: Framework): void {
       this.hooks.filter('location/modules'),
       ...this.discovery.resolveFrom,
     ])
-    .hooks.on('build/stats', false)
-    .hooks.on('build/target', 'web')
+    .hooks.on('build/stats', (): Configuration['stats'] => ({}))
+    .hooks.on('build/target', () => 'web')
     .hooks.on('build/watch', false)
-    .hooks.on('build/watchOptions', () => ({
-      ignored: [this.store.get('patterns.modules').toString()],
-      poll: 1000,
-    }))
 }

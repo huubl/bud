@@ -1,6 +1,6 @@
 {
   "name": "@roots/bud-postcss",
-  "version": "4.0.1",
+  "version": "4.6.0",
   "description": "Adds postcss support to @roots/bud projects",
   "homepage": "https://roots.io/bud",
   "repository": {
@@ -47,6 +47,9 @@
     "build": "yarn g:build",
     "build:cjs": "yarn g:build:cjs",
     "build:esm": "yarn g:build:esm",
+    "profile": "yarn g:profile",
+    "profile:cjs": "yarn g:profile:cjs",
+    "profile:esm": "yarn g:profile:esm",
     "lint": "yarn g:lint",
     "lint:eslint": "yarn g:lint:eslint",
     "lint:prettier": "yarn g:lint:prettier",
@@ -59,18 +62,36 @@
     "pkg:format": "yarn g:pkg:format"
   },
   "devDependencies": {
-    "@types/node": "^15.0.0",
-    "@types/signale": "^1.4.1"
+    "@roots/bud-extensions": "workspace:packages/@roots/bud-extensions",
+    "@roots/bud-framework": "workspace:packages/@roots/bud-framework",
+    "@types/fs-extra": "^9.0.11",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^15.12.2",
+    "@types/signale": "^1.4.1",
+    "postcss": "^8.3.2",
+    "postcss-import": "^14.0.2",
+    "postcss-preset-env": "^6.7.0",
+    "webpack": "5.38.1"
   },
   "dependencies": {
-    "@roots/bud-build": "workspace:*",
-    "@roots/bud-extensions": "workspace:*",
-    "@roots/bud-framework": "workspace:*",
+    "@roots/bud-build": "workspace:packages/@roots/bud-build",
     "autobind-decorator": "^2.4.0",
-    "postcss": "^8.2.13",
-    "postcss-import": "^14.0.1",
-    "postcss-loader": "^5.2.0",
-    "postcss-preset-env": "^6.7.0",
-    "signale": "^1.4.0"
+    "fs-extra": "^10.0.0",
+    "lodash": "^4.17.21",
+    "postcss-loader": "^5.3.0"
+  },
+  "peerDependencies": {
+    "@roots/bud": "*",
+    "postcss": "^8",
+    "postcss-import": "^14",
+    "postcss-preset-env": "^6"
+  },
+  "peerDependenciesMeta": {
+    "postcss-import": {
+      "optional": true
+    },
+    "postcss-preset-env": {
+      "optional": true
+    }
   }
 }

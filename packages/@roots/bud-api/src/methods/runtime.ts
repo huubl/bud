@@ -4,7 +4,7 @@ import type Webpack from 'webpack'
 declare module '@roots/bud-framework' {
   interface Framework {
     /**
-     * ## runtime  [💁 Fluent]
+     * ## runtime
      *
      * Generate a runtime chunk intended to be inlined on the page.
      *
@@ -28,10 +28,11 @@ type Runtime = (
   runtime?: Webpack.Configuration['optimization']['runtimeChunk'],
 ) => Framework
 
-const DEFAULT_OPTIONS: Webpack.Configuration['optimization']['runtimeChunk'] = {
-  name: (entrypoint: Webpack.EntryObject) =>
-    `runtime/${entrypoint.name}`,
-}
+const DEFAULT_OPTIONS: Webpack.Configuration['optimization']['runtimeChunk'] =
+  {
+    name: (entrypoint: Webpack.EntryObject) =>
+      `runtime/${entrypoint.name}`,
+  }
 
 export const runtime: Runtime = function (runtime?) {
   const value = runtime ? runtime : DEFAULT_OPTIONS
